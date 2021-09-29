@@ -7,9 +7,9 @@ const connection = mysql.createConnection({
     database: 'MEDCLOUD'
 })
 
-exports.handler = async function getAllPatients(event) {
+exports.handler = async function getPatient(event) {
 
-    const { id } = event.pathParameters;
+    const { id } = JSON.parse(event.body)
 
     const p = new Promise((resolve)=>{
         connection.query(`SELECT * FROM Patient WHERE id=${id} LIMIT 1;`, function(err, results){
@@ -23,9 +23,12 @@ exports.handler = async function getAllPatients(event) {
     return {
         statusCode: 200,
         headers: {
-            "Access-Control-Allow-Headers": "Content-Type",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+            "Access-Control-Allow-Credentials": true,
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+            "X-Requested-With": "*"
         },
         body: JSON.stringify({ results: result })
     }

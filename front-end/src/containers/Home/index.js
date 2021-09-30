@@ -66,7 +66,7 @@ export default function Home() {
                     <div>Loading...</div>
             }
             <Stack spacing={2} direction="row">
-                <Button variant="contained" >Cadastrar</Button>
+                <Button variant="contained" onClick={()=>{goToPage("/cadastrar")}} >Cadastrar</Button>
                 <Button variant="contained" onClick={()=>{rowSelected && goToPage("/atualizar")}} >Editar</Button>
                 <Button variant="contained" startIcon={<DeleteIcon />}>Deletar</Button>
             </Stack>

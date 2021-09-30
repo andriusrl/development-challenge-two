@@ -24,13 +24,9 @@ export default function UpdatePatient() {
                 `${baseUrl}`,
                 { form },
                 {
-                    headers: {'X-Requested-With': 'XMLHttpRequest'}
+                    headers: { 'Content-Type': 'application/json' }
                 }
             )
-            // await axios.post(
-            //     `${baseUrl}`,
-            //     { form }
-            // )
             console.log("Update com sucesso")
     
         } catch (error) {
@@ -40,6 +36,17 @@ export default function UpdatePatient() {
             console.log(error.status)
             console.log(error.statusText)
         }
+        // const requestOptions = {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     mode: "no-cors",
+        //     body: JSON.stringify(form)
+        // };
+        // const resultado = fetch(`${baseUrl}`, requestOptions)
+        //     .then(response => response.json())
+        //     .then(data => this.setState({ postId: data.id }));
+        // console.log(resultado)
+
     }
 
     const setGeneralForm = (event) =>{

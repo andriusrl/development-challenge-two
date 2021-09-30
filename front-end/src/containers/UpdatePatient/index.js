@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 
-// const baseUrl = 'https://ivcg8on2bb.execute-api.us-east-1.amazonaws.com/default/get_all_patients'
+const baseUrl = 'https://5kmnqpg37d.execute-api.us-east-1.amazonaws.com/default/update_patient'
 
 export default function UpdatePatient() {
 
@@ -17,22 +17,29 @@ export default function UpdatePatient() {
     const patient = JSON.parse(window.localStorage.getItem('patient'))
     
     const [form, setForm] = useState(patient || undefined)
+
+    const updatePatient = async () => {
+        try {
+            await axios.post(
+                `${baseUrl}`,
+                { form },
+                {
+                    headers: {'X-Requested-With': 'XMLHttpRequest'}
+                }
+            )
+            // await axios.post(
+            //     `${baseUrl}`,
+            //     { form }
+            // )
+            console.log("Update com sucesso")
     
-    // console.log(patient)
-
-    // function getAllPatients() {
-    //     axios.get(`${baseUrl}`)
-    //         .then((response) => { setListPatients(response.data.results) })
-    // }
-
-    // useEffect(() => {
-    //     getAllPatients()
-    // }, [])
-
-    // console.log(listPatients)
-
-    const update = () =>{
-
+        } catch (error) {
+            console.log("Erro no update")
+            console.log(error)
+            console.log(error.data)
+            console.log(error.status)
+            console.log(error.statusText)
+        }
     }
 
     const setGeneralForm = (event) =>{
@@ -72,7 +79,7 @@ export default function UpdatePatient() {
             <TextField id="city" label="Cidade" variant="outlined" defaultValue={form.city} onChange={setGeneralForm} />
             <Stack spacing={2} direction="row">
                 <Button variant="contained" onClick={()=>{goToPage('/')}} >Voltar</Button>
-                <Button variant="contained">Atualizar cadastro</Button>
+                <Button variant="contained" onClick={()=>{updatePatient()}}>Atualizar cadastro</Button>
             </Stack>
         </Grid>
     );

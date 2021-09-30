@@ -39,7 +39,7 @@ export default function Home() {
 
     const goToPage = (page) => {
         window.localStorage.setItem("patient", JSON.stringify(rowSelected))
-        history.push(`/${page}`);
+        history.push(`${page}`);
     }
 
     return (
@@ -66,8 +66,8 @@ export default function Home() {
                     <div>Loading...</div>
             }
             <Stack spacing={2} direction="row">
-                <Button variant="contained" onClick={()=>{goToPage("registro")}} >Cadastrar</Button>
-                <Button variant="contained">Editar</Button>
+                <Button variant="contained" >Cadastrar</Button>
+                <Button variant="contained" onClick={()=>{rowSelected && goToPage("/atualizar")}} >Editar</Button>
                 <Button variant="contained" startIcon={<DeleteIcon />}>Deletar</Button>
             </Stack>
         </div>

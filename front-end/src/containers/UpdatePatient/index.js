@@ -21,11 +21,11 @@ export default function UpdatePatient() {
     const updatePatient = async () => {
         try {
             await axios.post(
-                `${baseUrl}`,
+                `https://thingproxy.freeboard.io/fetch/${baseUrl}`,
                 { form },
-                {
-                    headers: { 'Content-Type': 'application/json' }
-                }
+                // {
+                //     headers: { 'Content-Type': 'application/json' }
+                // }
             )
             console.log("Update com sucesso")
     

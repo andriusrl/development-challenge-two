@@ -7,6 +7,7 @@ export default createGlobalStyle`
     outline: 0;
     box-sizing: border-box;
     overflow-x: hidden;
+    /* background-color: #1f262e; */
     /* height: 100%; */
     }
 `

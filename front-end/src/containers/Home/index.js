@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
+import ButtonCustom from '../../styles/button';
 
 
 const baseUrl = 'https://ivcg8on2bb.execute-api.us-east-1.amazonaws.com/default/get_all_patients'
@@ -66,9 +67,9 @@ export default function Home() {
                     <div>Loading...</div>
             }
             <Stack spacing={2} direction="row">
-                <Button variant="contained" onClick={()=>{goToPage("/cadastrar")}} >Cadastrar</Button>
-                <Button variant="contained" onClick={()=>{rowSelected && goToPage("/atualizar")}} >Editar</Button>
-                <Button variant="contained" startIcon={<DeleteIcon />}>Deletar</Button>
+                <ButtonCustom variant="contained" onClick={()=>{goToPage("/cadastrar")}} >Cadastrar</ButtonCustom>
+                <ButtonCustom variant="contained" onClick={()=>{rowSelected && goToPage("/atualizar")}} >Editar</ButtonCustom>
+                <ButtonCustom variant="contained" >Deletar</ButtonCustom>
             </Stack>
         </div>
     );

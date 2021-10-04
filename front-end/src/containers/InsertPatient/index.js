@@ -26,13 +26,12 @@ export default function InsertPatient() {
 
     const insertPatient = async () => {
         try {
-            await axios.post(
+            let res = await axios.post(
                 `${baseUrl}`,
-                { form },
-                {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                }
+                form 
             )
+            console.log(res)
+            console.log(res.data)
             // await axios.post(
             //     `${baseUrl}`,
             //     { form }

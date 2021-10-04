@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import ButtonCustom from '../../styles/button';
 
 
-const baseUrl = 'https://ivcg8on2bb.execute-api.us-east-1.amazonaws.com/default/get_all_patients'
+const baseUrl = 'https://ivcg8on2bb.execute-api.us-east-1.amazonaws.com/default'
 
 
 const columns = [
@@ -27,8 +27,31 @@ export default function Home() {
     const [listPatients, setListPatients] = useState(undefined)
     const [rowSelected, setRowSelected] = useState(undefined)
 
+    const deletePatient = async () => {
+        try {
+            // setLoading(true)
+            console.log("Paciente selecionado")
+            console.log(rowSelected)
+            await axios.post(
+                `https://thingproxy.freeboard.io/fetch/https://eii3sexcr3.execute-api.us-east-1.amazonaws.com/default/remove_patient`,
+                {id: rowSelected.id}
+            )
+            
+            console.log("Deletado!")
+            getAllPatients()
+            // setOpen(true)
+
+        } catch (error) {
+            console.log("Erro ao deletar")
+            console.log(error)
+            console.log(error.data)
+            console.log(error.status)
+            console.log(error.statusText)
+        }
+    }
+
     function getAllPatients() {
-        axios.get(`${baseUrl}`)
+        axios.get(`${baseUrl}/get_all_patients`)
             .then((response) => { setListPatients(response.data.results) })
     }
 
@@ -42,6 +65,8 @@ export default function Home() {
         window.localStorage.setItem("patient", JSON.stringify(rowSelected))
         history.push(`${page}`);
     }
+
+    
 
     return (
         <div>
@@ -58,7 +83,7 @@ export default function Home() {
                             autoHeight
                             autoPageSize
                             disableMultipleSelection={true}
-                            isRowSelectable={(params) => setRowSelected(params.row)}
+                            isRowSelectable={(params) => {setRowSelected(params.row);console.log(params.row)}}
                         // cellCheckbox
                         // checkboxSelection
                         />
@@ -67,9 +92,9 @@ export default function Home() {
                     <div>Loading...</div>
             }
             <Stack spacing={2} direction="row">
-                <ButtonCustom variant="contained" onClick={()=>{goToPage("/cadastrar")}} >Cadastrar</ButtonCustom>
-                <ButtonCustom variant="contained" onClick={()=>{rowSelected && goToPage("/atualizar")}} >Editar</ButtonCustom>
-                <ButtonCustom variant="contained" >Deletar</ButtonCustom>
+                <ButtonCustom variant="contained" onClick={() => { goToPage("/cadastrar") }} >Cadastrar</ButtonCustom>
+                <ButtonCustom variant="contained" onClick={() => { rowSelected && goToPage("/atualizar") }} >Editar</ButtonCustom>
+                <ButtonCustom variant="contained" onClick={()=>{ deletePatient()}} >Deletar</ButtonCustom>
             </Stack>
         </div>
     );

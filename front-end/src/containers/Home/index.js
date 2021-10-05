@@ -80,8 +80,6 @@ export default function Home() {
         history.push(`${page}`);
     }
 
-
-
     return (
         <Grid
             container

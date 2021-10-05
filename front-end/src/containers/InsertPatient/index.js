@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
+import { cpfMask } from '../../mask/maskCpf';
 
 const baseUrl = 'https://thingproxy.freeboard.io/fetch/https://7tzui130j5.execute-api.us-east-1.amazonaws.com/default/insert_patient'
 
@@ -32,10 +33,6 @@ export default function InsertPatient() {
             )
             console.log(res)
             console.log(res.data)
-            // await axios.post(
-            //     `${baseUrl}`,
-            //     { form }
-            // )
             console.log("Cadastrado com sucesso")
 
         } catch (error) {
@@ -51,7 +48,7 @@ export default function InsertPatient() {
         const formCopy = form
         setForm({
             ...formCopy,
-            [event.target.id]: event.target.value,
+            [event.target.id]: `${event.target.id === 'cpf' ? cpfMask(event.target.value) : event.target.value}`,
         })
     }
 
@@ -79,7 +76,7 @@ export default function InsertPatient() {
                 <TextField id="last_name" label="Sobrenome" variant="outlined" value={form.name_name} onChange={setGeneralForm} />
                 <TextField id="cpf" label="CPF" variant="outlined" value={form.cpf} onChange={setGeneralForm} />
                 <TextField id="street" label="Rua" variant="outlined" value={form.street} onChange={setGeneralForm} />
-                <TextField id="street_number" label="Numero" variant="outlined" value={form.street_number} onChange={setGeneralForm} />
+                <TextField id="street_number" label="Numero" type="number" variant="outlined" value={form.street_number} onChange={setGeneralForm} />
                 <TextField id="district" label="Bairro" variant="outlined" value={form.district} onChange={setGeneralForm} />
                 <TextField id="cep" label="CEP" variant="outlined" value={form.cep} onChange={setGeneralForm} />
                 <TextField id="city" label="Cidade" variant="outlined" value={form.city} onChange={setGeneralForm} />

@@ -6,43 +6,8 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
-import Modal from '@mui/material/Modal';
-import { styled, Box } from '@mui/system';
-import ModalUnstyled from '@mui/core/ModalUnstyled';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-
-// const StyledModal = styled(ModalUnstyled)`
-//     position: fixed;
-//     z-index: 1300;
-//     right: 0;
-//     bottom: 0;
-//     top: 0;
-//     left: 0;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-// `;
-
-// const Backdrop = styled('div')`
-//     z-index: -1;
-//     position: fixed;
-//     right: 0;
-//     bottom: 0;
-//     top: 0;
-//     left: 0;
-//     background-color: rgba(0, 0, 0, 0.5);
-//     -webkit-tap-highlight-color: transparent;
-// `;
-
-// const style = {
-//     width: 400,
-//     bgcolor: 'background.paper',
-//     border: '2px solid #000',
-//     p: 2,
-//     px: 4,
-//     pb: 3,
-// };
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -54,10 +19,6 @@ export default function UpdatePatient() {
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
-
-    const handleClick = () => {
-        setOpen(true);
-    };
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -110,7 +71,7 @@ export default function UpdatePatient() {
         })
     }
 
-    console.log(form)
+    // console.log(form)
 
     const goToPage = (page) => {
         history.push(`${page}`);
@@ -123,8 +84,8 @@ export default function UpdatePatient() {
             alignItems="center"
             // spacing={2}
             direction="column"
-        // autoHeight
-        // autoPageSize
+            // autoHeight
+            // autoPageSize
         >
             <Snackbar open={loading} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>

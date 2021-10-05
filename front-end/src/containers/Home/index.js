@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from "@material-ui/data-grid";
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import ButtonCustom from '../../styles/button';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 
-const baseUrl = 'https://ivcg8on2bb.execute-api.us-east-1.amazonaws.com/default'
+const baseUrlGetAllPatients = 'https://ivcg8on2bb.execute-api.us-east-1.amazonaws.com/default/get_all_patients'
+const baseUrlDeletePatient = 'https://thingproxy.freeboard.io/fetch/https://eii3sexcr3.execute-api.us-east-1.amazonaws.com/default/remove_patient'
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const columns = [
     { field: 'id', headerName: 'id', width: 90 },
@@ -26,6 +34,14 @@ export default function Home() {
 
     const [listPatients, setListPatients] = useState(undefined)
     const [rowSelected, setRowSelected] = useState(undefined)
+    const [openWarning, setOpenWarning] = useState(false);
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenWarning(false);
+    };
 
     const deletePatient = async () => {
         try {
@@ -33,10 +49,10 @@ export default function Home() {
             console.log("Paciente selecionado")
             console.log(rowSelected)
             await axios.post(
-                `https://thingproxy.freeboard.io/fetch/https://eii3sexcr3.execute-api.us-east-1.amazonaws.com/default/remove_patient`,
-                {id: rowSelected.id}
+                `${baseUrlDeletePatient}`,
+                { id: rowSelected.id }
             )
-            
+
             console.log("Deletado!")
             getAllPatients()
             // setOpen(true)
@@ -51,7 +67,7 @@ export default function Home() {
     }
 
     function getAllPatients() {
-        axios.get(`${baseUrl}/get_all_patients`)
+        axios.get(`${baseUrlGetAllPatients}`)
             .then((response) => { setListPatients(response.data.results) })
     }
 
@@ -59,18 +75,40 @@ export default function Home() {
         getAllPatients()
     }, [])
 
-    console.log(listPatients)
-
     const goToPage = (page) => {
         window.localStorage.setItem("patient", JSON.stringify(rowSelected))
         history.push(`${page}`);
     }
 
-    
+
 
     return (
-        <div>
-            Página inicial
+        <Grid
+            container
+            // justifyContent="center"
+            // alignItems="center"
+            // // spacing={2}
+            direction="column"
+        >
+            <Snackbar open={openWarning} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+                    Selecione um paciente!
+                </Alert>
+            </Snackbar>
+            <Grid
+                container
+                alignItems="center"
+                direction="column"
+            >
+                <Typography variant="h4" gutterBottom component="div">
+                    Página inicial
+                </Typography>
+            </Grid>
+            <Stack spacing={2} direction="row" justifyContent="center">
+                <ButtonCustom variant="contained" onClick={() => { goToPage("/cadastrar") }} >Cadastrar</ButtonCustom>
+                <ButtonCustom variant="contained" onClick={() => { rowSelected ? goToPage("/atualizar") : setOpenWarning(true) }} >Editar</ButtonCustom>
+                <ButtonCustom variant="contained" onClick={() => { deletePatient() }} >Deletar</ButtonCustom>
+            </Stack>
 
             {
                 listPatients ?
@@ -81,21 +119,17 @@ export default function Home() {
                             pageSize={5}
                             rowsPerPageOptions={[5]}
                             autoHeight
+                            autoWidth
                             autoPageSize
-                            disableMultipleSelection={true}
-                            isRowSelectable={(params) => {setRowSelected(params.row);console.log(params.row)}}
-                        // cellCheckbox
+                            // checkboxSelection
+                            isRowSelectable={(params) => { setRowSelected(params.row); console.log(params.row) }}
+                            cellCheckbox
                         // checkboxSelection
                         />
                     </div>
                     :
                     <div>Loading...</div>
             }
-            <Stack spacing={2} direction="row">
-                <ButtonCustom variant="contained" onClick={() => { goToPage("/cadastrar") }} >Cadastrar</ButtonCustom>
-                <ButtonCustom variant="contained" onClick={() => { rowSelected && goToPage("/atualizar") }} >Editar</ButtonCustom>
-                <ButtonCustom variant="contained" onClick={()=>{ deletePatient()}} >Deletar</ButtonCustom>
-            </Stack>
-        </div>
+        </Grid>
     );
 }

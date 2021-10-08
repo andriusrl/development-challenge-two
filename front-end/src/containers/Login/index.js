@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -33,11 +32,7 @@ export default function Login() {
             window.localStorage.setItem("auth", JSON.stringify(res.data.results))
             goToPage('/')
         } catch (error) {
-            console.log("Erro no login")
-            console.log(error)
-            console.log(error.data)
-            console.log(error.status)
-            console.log(error.statusText)
+            alert("email/senha incorretos")
         }
     }
 
@@ -62,10 +57,7 @@ export default function Login() {
             container
             justifyContent="center"
             alignItems="center"
-            // spacing={2}
             direction="column"
-        // autoHeight
-        // autoPageSize
         >
             <Header pageTitle="Desconectado" />
             <Stack spacing={2}>

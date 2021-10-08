@@ -70,7 +70,7 @@ export default function InsertPatient() {
             })
 
         } catch (error) {
-            error.response.status == 401 && goToPage("/login")
+            error?.response?.status == 401 && goToPage("/login")
         }
     }
 
@@ -93,10 +93,7 @@ export default function InsertPatient() {
             container
             justifyContent="center"
             alignItems="center"
-            // spacing={2}
             direction="column"
-        // autoHeight
-        // autoPageSize
         >
             <Snackbar open={loading} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>

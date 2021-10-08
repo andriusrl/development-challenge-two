@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from "@material-ui/data-grid";
-import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import ButtonCustom from '../../styles/button';
@@ -26,7 +23,6 @@ const columns = [
     { field: 'last_name', headerName: 'Sobrenome', width: 200 },
     { field: 'cpf', headerName: 'CPF', width: 200 },
     { field: 'city', headerName: 'Cidade', width: 200 },
-    // { field: 'age', headerName: 'Age', type: 'number', width: 90, },
 ];
 
 export default function Home() {
@@ -72,15 +68,15 @@ export default function Home() {
             getAllPatients()
 
         } catch (error) {
-            // error.response.status == 401 && goToPage("/login")
+            error?.response?.status == 401 && goToPage("/login")
         }
     }
 
     async function getAllPatients (){       
 
         try {
-            // openLoading(true)
-            console.log(baseUrlGetAllPatients)
+            auth?.token === undefined && goToPage("/login")
+            console.log( auth?.token)
             const response = await axios.post(
                 baseUrlGetAllPatients,null,
                 { headers : {
@@ -90,9 +86,9 @@ export default function Home() {
             setListPatients(response.data.results)
 
         } catch (error) {
-            console.log(error.response)
-            console.log(error.response.status)
-            error.response.status == 401 && goToPage("/login")
+            console.log(error?.response)
+            console.log(error?.response?.status)
+            error?.response?.status == 401 && goToPage("/login")
         }
     }
 
@@ -103,9 +99,6 @@ useEffect(() => {
 return (
     <Grid
         container
-        // justifyContent="center"
-        // alignItems="center"
-        // // spacing={2}
         direction="column"
     >
         <Snackbar open={openWarning} autoHideDuration={6000} onClose={handleClose}>

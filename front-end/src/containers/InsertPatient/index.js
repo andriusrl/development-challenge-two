@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { cpfMask } from '../../mask/maskCpf';
+import ButtonCustom from '../../styles/button';
 
 const baseUrl = 'https://thingproxy.freeboard.io/fetch/https://7tzui130j5.execute-api.us-east-1.amazonaws.com/default/insert_patient'
 
@@ -97,8 +98,8 @@ export default function InsertPatient() {
                 <TextField size="small" required id="city" label="Cidade" variant="filled" value={form.city} onChange={setGeneralForm} />
             </Stack>
             <Stack spacing={2} direction="row">
-                <Button variant="contained" onClick={() => { goToPage('/') }} >Voltar</Button>
-                <Button variant="contained" onClick={() => { insertPatient() }}>Cadastrar paciente</Button>
+                <ButtonCustom variant="contained" onClick={() => { goToPage('/') }} >Voltar</ButtonCustom>
+                <ButtonCustom variant="contained" onClick={() => { insertPatient() }}>Cadastrar paciente</ButtonCustom>
             </Stack>
         </Grid>
     );

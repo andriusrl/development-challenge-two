@@ -44,9 +44,7 @@ export default function Home() {
     const [openLoadingSucess, setOpenLoadingSucess] = useState(false);
 
     const goToPage = (page) => {
-        if (page == '/cadastrar'){
-            window.localStorage.setItem("patient", JSON.stringify(rowSelected))
-        }
+        window.localStorage.setItem("patient", JSON.stringify(rowSelected))
         history.push(`${page}`);
     }
 
@@ -60,10 +58,13 @@ export default function Home() {
 
     async function deletePatient (){
         try {
-            openLoading(true)
+            setOpenLoading(true)
             await axios.post(
                 `${baseUrlDeletePatient}`,
-                { id: rowSelected.id }
+                { id: rowSelected.id },
+                { headers : {
+                    Authorization: auth.token
+                }}
             )
             setOpenLoadingSucess(true)
             getAllPatients()

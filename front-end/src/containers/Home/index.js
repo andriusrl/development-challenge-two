@@ -72,11 +72,7 @@ export default function Home() {
             getAllPatients()
 
         } catch (error) {
-            console.log("Erro ao deletar")
-            console.log(error)
-            console.log(error.data)
-            console.log(error.status)
-            console.log(error.statusText)
+            // error.response.status == 401 && goToPage("/login")
         }
     }
 
@@ -94,12 +90,9 @@ export default function Home() {
             setListPatients(response.data.results)
 
         } catch (error) {
-            console.log("Erro ao fazer login")
-            console.log(error)
-            console.log(error.data)
-            console.log(error.status)
-            console.log(error.statusText)
-            goToPage("/login")
+            console.log(error.response)
+            console.log(error.response.status)
+            error.response.status == 401 && goToPage("/login")
         }
     }
 
@@ -132,22 +125,7 @@ return (
         </Snackbar>
 
         <Header pageTitle="Lista de pacientes" />
-
-        <Grid
-            container
-            alignItems="center"
-            direction="column"
-        >
-            {/* <Typography variant="h4" gutterBottom component="div">
-                Página inicial
-            </Typography> */}
-        </Grid>
-        <Stack spacing={2} direction="row" justifyContent="center">
-            <ButtonCustom variant="contained" onClick={() => { goToPage("/cadastrar") }} >Cadastrar</ButtonCustom>
-            <ButtonCustom variant="contained" onClick={() => { rowSelected ? goToPage("/atualizar") : setOpenWarning(true) }} >Editar</ButtonCustom>
-            <ButtonCustom variant="contained" onClick={() => { deletePatient() }} >Deletar</ButtonCustom>
-        </Stack>
-
+        
         {
             listPatients ?
                 <div>
@@ -168,6 +146,11 @@ return (
                 :
                 <div>Carregando...</div>
         }
+        <Stack spacing={2} direction="row" justifyContent="center">
+            <ButtonCustom variant="contained" onClick={() => { goToPage("/cadastrar") }} >Cadastrar</ButtonCustom>
+            <ButtonCustom variant="contained" onClick={() => { rowSelected ? goToPage("/atualizar") : setOpenWarning(true) }} >Editar</ButtonCustom>
+            <ButtonCustom variant="contained" onClick={() => { deletePatient() }} >Deletar</ButtonCustom>
+        </Stack>
     </Grid>
 );
 }

@@ -10,6 +10,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { cpfMask } from '../../mask/maskCpf';
 import ButtonCustom from '../../styles/button';
+import Header from '../../components/Header';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -49,10 +50,7 @@ export default function UpdatePatient() {
             setOpen(true)
 
         } catch (error) {
-            console.log(error)
-            console.log(error.data)
-            console.log(error.status)
-            console.log(error.statusText)
+            error.response.status == 401 && goToPage("/login")
         }
     }
 
@@ -91,9 +89,9 @@ export default function UpdatePatient() {
                     Paciente atualizado com sucesso!!
                 </Alert>
             </Snackbar>
-            <Typography variant="h4" gutterBottom component="div">
-                Atualizar cadastro
-            </Typography>
+
+            <Header pageTitle="Atualizar cadastro" />
+
             <Stack spacing={2}>
                 <TextField id="name" label="Nome" variant="filled" defaultValue={form.name} onChange={setGeneralForm} />
                 <TextField id="last_name" label="Sobrenome" variant="filled" defaultValue={form.last_name} onChange={setGeneralForm} />

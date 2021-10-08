@@ -70,11 +70,7 @@ export default function InsertPatient() {
             })
 
         } catch (error) {
-            console.log("Erro no insert")
-            console.log(error)
-            console.log(error.data)
-            console.log(error.status)
-            console.log(error.statusText)
+            error.response.status == 401 && goToPage("/login")
         }
     }
 
@@ -113,8 +109,8 @@ export default function InsertPatient() {
                 </Alert>
             </Snackbar>
 
-            <Header pageTitle="Cadastro de pacientes" />
-            
+            <Header pageTitle="Cadastro de paciente" />
+
             <Stack spacing={2}>
                 <TextField size="small" required id="name" label="Nome" variant="filled" value={form.name} onChange={setGeneralForm} />
                 <TextField size="small" required id="last_name" label="Sobrenome" variant="filled" value={form.last_name} onChange={setGeneralForm} />

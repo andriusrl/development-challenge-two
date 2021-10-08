@@ -12,14 +12,14 @@ const baseUrl = 'https://thingproxy.freeboard.io/fetch/https://ymgzlcsi82.execut
 
 export default function Login() {
 
+    localStorage.clear();
+
     const history = useHistory();
 
     const [form, setForm] = useState({
         email: "",
         password: ""
     })
-
-    console.log(form)
 
     const login = async () => {
         try {
@@ -31,7 +31,7 @@ export default function Login() {
             console.log(res.data)
             console.log("Logado com sucesso")
             window.localStorage.setItem("auth", JSON.stringify(res.data.results))
-            goToPage('/home')
+            goToPage('/')
         } catch (error) {
             console.log("Erro no login")
             console.log(error)
@@ -67,7 +67,7 @@ export default function Login() {
         // autoHeight
         // autoPageSize
         >
-            <Header pageTitle="Cadastro de paciente" />
+            <Header pageTitle="Desconectado" />
             <Stack spacing={2}>
                 <TextField size="small" required id="email" label="E-mail" variant="filled" value={form.email} onChange={setGeneralForm} />
                 <TextField size="small" required id="password" label="Senha" variant="filled" value={form.password} onChange={setGeneralForm} />            

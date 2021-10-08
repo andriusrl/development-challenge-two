@@ -23,7 +23,7 @@ export default function InsertPatient() {
 
     const history = useHistory();
     const [loading, setLoading] = useState(false);
-    const [open, setOpen] = useState(false);
+    const [alertSucess, setAlertSucess] = useState(false);
     const [form, setForm] = useState({
         name: "",
         last_name: "",
@@ -40,7 +40,7 @@ export default function InsertPatient() {
             return;
         }
         setLoading(false)
-        setOpen(false);
+        setAlertSucess(false);
     };
 
     const insertPatient = async () => {
@@ -101,12 +101,12 @@ export default function InsertPatient() {
         >
             <Snackbar open={loading} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
-                    Atualizando cadastro, aguarde...
+                    Cadastrando paciente, aguarde...
                 </Alert>
             </Snackbar>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Snackbar open={alertSucess} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                    Paciente atualizado com sucesso!!
+                    Paciente cadastrado com sucesso!!
                 </Alert>
             </Snackbar>
             <Typography variant="h3" gutterBottom component="div">

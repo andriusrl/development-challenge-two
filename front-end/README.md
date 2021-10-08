@@ -1,6 +1,6 @@
 # CRUD Pacientes
 
-### Permite listar, adicionar, atualizar e excluir pacientes.
+### Permite logar, listar, adicionar, atualizar e excluir pacientes.
 
 # Linguagens e bibliotecas utilizadas
 

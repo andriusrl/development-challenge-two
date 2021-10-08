@@ -10,6 +10,7 @@ import { cpfMask } from '../../mask/maskCpf';
 import ButtonCustom from '../../styles/button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import Header from '../../components/Header';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -45,6 +46,7 @@ export default function InsertPatient() {
 
     const insertPatient = async () => {
         try {
+            setLoading(true)
             let res = await axios.post(
                 `${baseUrl}`,
                 form,
@@ -55,6 +57,7 @@ export default function InsertPatient() {
             console.log(res)
             console.log(res.data)
             console.log("Cadastrado com sucesso")
+            setAlertSucess(true)
             setForm({
                 name: "",
                 last_name: "",
@@ -109,9 +112,9 @@ export default function InsertPatient() {
                     Paciente cadastrado com sucesso!!
                 </Alert>
             </Snackbar>
-            <Typography variant="h3" gutterBottom component="div">
-                Cadastro de paciente
-            </Typography>
+
+            <Header pageTitle="Cadastro de pacientes" />
+            
             <Stack spacing={2}>
                 <TextField size="small" required id="name" label="Nome" variant="filled" value={form.name} onChange={setGeneralForm} />
                 <TextField size="small" required id="last_name" label="Sobrenome" variant="filled" value={form.last_name} onChange={setGeneralForm} />

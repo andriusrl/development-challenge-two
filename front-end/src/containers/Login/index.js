@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
+import Header from '../../components/Header';
 
 const baseUrl = 'https://thingproxy.freeboard.io/fetch/https://ymgzlcsi82.execute-api.us-east-1.amazonaws.com/default/signin'
 
@@ -66,9 +67,7 @@ export default function Login() {
         // autoHeight
         // autoPageSize
         >
-            <Typography variant="h3" gutterBottom component="div">
-                Cadastro de paciente
-            </Typography>
+            <Header pageTitle="Cadastro de paciente" />
             <Stack spacing={2}>
                 <TextField size="small" required id="email" label="E-mail" variant="filled" value={form.email} onChange={setGeneralForm} />
                 <TextField size="small" required id="password" label="Senha" variant="filled" value={form.password} onChange={setGeneralForm} />            

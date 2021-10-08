@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { cpfMask } from '../../mask/maskCpf';
+import ButtonCustom from '../../styles/button';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -94,17 +95,17 @@ export default function UpdatePatient() {
                 Atualizar cadastro
             </Typography>
             <Stack spacing={2}>
-                <TextField id="name" label="Nome" variant="outlined" defaultValue={form.name} onChange={setGeneralForm} />
-                <TextField id="last_name" label="Sobrenome" variant="outlined" defaultValue={form.last_name} onChange={setGeneralForm} />
-                <TextField id="cpf" label="CPF" variant="outlined" defaultValue={form.cpf} onChange={setGeneralForm} />
-                <TextField id="street" label="Rua" variant="outlined" defaultValue={form.street} onChange={setGeneralForm} />
-                <TextField id="street_number" label="Numero" variant="outlined" defaultValue={form.street_number} onChange={setGeneralForm} />
-                <TextField id="district" label="Bairro" variant="outlined" defaultValue={form.district} onChange={setGeneralForm} />
-                <TextField id="cep" label="CEP" variant="outlined" defaultValue={form.cep} onChange={setGeneralForm} />
-                <TextField id="city" label="Cidade" variant="outlined" defaultValue={form.city} onChange={setGeneralForm} />
+                <TextField id="name" label="Nome" variant="filled" defaultValue={form.name} onChange={setGeneralForm} />
+                <TextField id="last_name" label="Sobrenome" variant="filled" defaultValue={form.last_name} onChange={setGeneralForm} />
+                <TextField id="cpf" label="CPF" variant="filled" defaultValue={form.cpf} onChange={setGeneralForm} />
+                <TextField id="street" label="Rua" variant="filled" defaultValue={form.street} onChange={setGeneralForm} />
+                <TextField id="street_number" label="Numero" variant="filled" defaultValue={form.street_number} onChange={setGeneralForm} />
+                <TextField id="district" label="filled" variant="filled" defaultValue={form.district} onChange={setGeneralForm} />
+                <TextField id="cep" label="CEP" variant="filled" defaultValue={form.cep} onChange={setGeneralForm} />
+                <TextField id="city" label="Cidade" variant="filled" defaultValue={form.city} onChange={setGeneralForm} />
                 <Stack spacing={2} direction="row">
-                    <Button variant="contained" onClick={() => { goToPage('/') }} >Voltar</Button>
-                    <Button variant="contained" onClick={() => { updatePatient() }}>Atualizar cadastro</Button>
+                    <ButtonCustom variant="contained" onClick={() => { goToPage('/') }} >Voltar</ButtonCustom>
+                    <ButtonCustom variant="contained" onClick={() => { updatePatient() }}>Atualizar cadastro</ButtonCustom>
                 </Stack>
             </Stack>
         </Grid>

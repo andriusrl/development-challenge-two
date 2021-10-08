@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import ButtonCustom from '../../styles/button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import Header from '../../components/Header';
 
 
 const baseUrlGetAllPatients = 'https://thingproxy.freeboard.io/fetch/https://ivcg8on2bb.execute-api.us-east-1.amazonaws.com/default/get_all_patients'
@@ -129,14 +130,17 @@ return (
                 Paciente deletado!
             </Alert>
         </Snackbar>
+
+        <Header pageTitle="Lista de pacientes" />
+
         <Grid
             container
             alignItems="center"
             direction="column"
         >
-            <Typography variant="h4" gutterBottom component="div">
+            {/* <Typography variant="h4" gutterBottom component="div">
                 Página inicial
-            </Typography>
+            </Typography> */}
         </Grid>
         <Stack spacing={2} direction="row" justifyContent="center">
             <ButtonCustom variant="contained" onClick={() => { goToPage("/cadastrar") }} >Cadastrar</ButtonCustom>

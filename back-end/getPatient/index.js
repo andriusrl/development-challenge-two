@@ -1,10 +1,10 @@
 const mysql = require('mysql');
 
 const connection = mysql.createConnection({
-    host: 'medcloud.ckbdecugxjkk.us-east-1.rds.amazonaws.com',
+    host: process.env.host,
     user: 'admin',
-    password: 'by7dg512',
-    database: 'MEDCLOUD'
+    password: process.env.dbPassword,
+    database: process.env.dbName
 })
 
 exports.handler = async function getPatient(event) {

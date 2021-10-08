@@ -12,7 +12,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 
-const baseUrlGetAllPatients = 'https://ivcg8on2bb.execute-api.us-east-1.amazonaws.com/default/get_all_patients'
+const baseUrlGetAllPatients = 'https://thingproxy.freeboard.io/fetch/https://ivcg8on2bb.execute-api.us-east-1.amazonaws.com/default/get_all_patients'
 const baseUrlDeletePatient = 'https://thingproxy.freeboard.io/fetch/https://eii3sexcr3.execute-api.us-east-1.amazonaws.com/default/remove_patient'
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -34,28 +34,39 @@ export default function Home() {
 
     const [listPatients, setListPatients] = useState(undefined)
     const [rowSelected, setRowSelected] = useState(undefined)
+
+    const auth = JSON.parse(window.localStorage.getItem('auth'))
+
+    console.log(auth)
+
     const [openWarning, setOpenWarning] = useState(false);
+    const [openLoading, setOpenLoading] = useState(false);
+    const [openLoadingSucess, setOpenLoadingSucess] = useState(false);
+
+    const goToPage = (page) => {
+        if (page == '/cadastrar'){
+            window.localStorage.setItem("patient", JSON.stringify(rowSelected))
+        }
+        history.push(`${page}`);
+    }
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setOpenWarning(false);
+        setOpenLoading(false);
     };
 
-    const deletePatient = async () => {
+    async function deletePatient (){
         try {
-            // setLoading(true)
-            console.log("Paciente selecionado")
-            console.log(rowSelected)
+            openLoading(true)
             await axios.post(
                 `${baseUrlDeletePatient}`,
                 { id: rowSelected.id }
             )
-
-            console.log("Deletado!")
+            setOpenLoadingSucess(true)
             getAllPatients()
-            // setOpen(true)
 
         } catch (error) {
             console.log("Erro ao deletar")
@@ -66,68 +77,91 @@ export default function Home() {
         }
     }
 
-    function getAllPatients() {
-        axios.get(`${baseUrlGetAllPatients}`)
-            .then((response) => { setListPatients(response.data.results) })
+    async function getAllPatients (){       
+
+        try {
+            // openLoading(true)
+            console.log(baseUrlGetAllPatients)
+            const response = await axios.post(
+                baseUrlGetAllPatients,null,
+                { headers : {
+                    Authorization: auth.token
+                }}
+            )
+            setListPatients(response.data.results)
+
+        } catch (error) {
+            console.log("Erro ao fazer login")
+            console.log(error)
+            console.log(error.data)
+            console.log(error.status)
+            console.log(error.statusText)
+            goToPage("/login")
+        }
     }
 
-    useEffect(() => {
-        getAllPatients()
-    }, [])
+useEffect(() => {
+    getAllPatients()
+}, [])
 
-    const goToPage = (page) => {
-        window.localStorage.setItem("patient", JSON.stringify(rowSelected))
-        history.push(`${page}`);
-    }
-
-    return (
+return (
+    <Grid
+        container
+        // justifyContent="center"
+        // alignItems="center"
+        // // spacing={2}
+        direction="column"
+    >
+        <Snackbar open={openWarning} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+                Selecione um paciente!
+            </Alert>
+        </Snackbar>
+        <Snackbar open={openLoading} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+                Deletando paciente, aguarde!
+            </Alert>
+        </Snackbar>
+        <Snackbar open={openLoadingSucess} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                Paciente deletado!
+            </Alert>
+        </Snackbar>
         <Grid
             container
-            // justifyContent="center"
-            // alignItems="center"
-            // // spacing={2}
+            alignItems="center"
             direction="column"
         >
-            <Snackbar open={openWarning} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
-                    Selecione um paciente!
-                </Alert>
-            </Snackbar>
-            <Grid
-                container
-                alignItems="center"
-                direction="column"
-            >
-                <Typography variant="h4" gutterBottom component="div">
-                    Página inicial
-                </Typography>
-            </Grid>
-            <Stack spacing={2} direction="row" justifyContent="center">
-                <ButtonCustom variant="contained" onClick={() => { goToPage("/cadastrar") }} >Cadastrar</ButtonCustom>
-                <ButtonCustom variant="contained" onClick={() => { rowSelected ? goToPage("/atualizar") : setOpenWarning(true) }} >Editar</ButtonCustom>
-                <ButtonCustom variant="contained" onClick={() => { deletePatient() }} >Deletar</ButtonCustom>
-            </Stack>
-
-            {
-                listPatients ?
-                    <div>
-                        <DataGrid
-                            rows={listPatients}
-                            columns={columns}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
-                            autoHeight
-                            autoWidth
-                            autoPageSize
-                            // checkboxSelection
-                            isRowSelectable={(params) => { setRowSelected(params.row); console.log(params.row) }}
-                            cellCheckbox
-                        // checkboxSelection
-                        />
-                    </div>
-                    :
-                    <div>Loading...</div>
-            }
+            <Typography variant="h4" gutterBottom component="div">
+                Página inicial
+            </Typography>
         </Grid>
-    );
+        <Stack spacing={2} direction="row" justifyContent="center">
+            <ButtonCustom variant="contained" onClick={() => { goToPage("/cadastrar") }} >Cadastrar</ButtonCustom>
+            <ButtonCustom variant="contained" onClick={() => { rowSelected ? goToPage("/atualizar") : setOpenWarning(true) }} >Editar</ButtonCustom>
+            <ButtonCustom variant="contained" onClick={() => { deletePatient() }} >Deletar</ButtonCustom>
+        </Stack>
+
+        {
+            listPatients ?
+                <div>
+                    <DataGrid
+                        rows={listPatients}
+                        columns={columns}
+                        pageSize={5}
+                        rowsPerPageOptions={[5]}
+                        autoHeight
+                        autoWidth
+                        autoPageSize
+                        // checkboxSelection
+                        isRowSelectable={(params) => { setRowSelected(params.row); console.log(params.row) }}
+                        cellCheckbox
+                    // checkboxSelection
+                    />
+                </div>
+                :
+                <div>Carregando...</div>
+        }
+    </Grid>
+);
 }

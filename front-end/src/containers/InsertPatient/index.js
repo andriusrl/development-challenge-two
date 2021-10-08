@@ -12,6 +12,8 @@ const baseUrl = 'https://thingproxy.freeboard.io/fetch/https://7tzui130j5.execut
 
 export default function InsertPatient() {
 
+    const auth = JSON.parse(window.localStorage.getItem('auth'))
+
     const history = useHistory();
 
     const [form, setForm] = useState({
@@ -29,11 +31,24 @@ export default function InsertPatient() {
         try {
             let res = await axios.post(
                 `${baseUrl}`,
-                form 
+                form,
+                { headers : {
+                    Authorization: auth.token
+                }}
             )
             console.log(res)
             console.log(res.data)
             console.log("Cadastrado com sucesso")
+            setForm({
+                name: "",
+                last_name: "",
+                cpf: "",
+                street: "",
+                street_number: "",
+                district: "",
+                cep: "",
+                city: ""
+            })
 
         } catch (error) {
             console.log("Erro no insert")
@@ -72,14 +87,14 @@ export default function InsertPatient() {
                 Cadastro de paciente
             </Typography>
             <Stack spacing={2}>
-                <TextField id="name" label="Nome" variant="outlined" value={form.name} onChange={setGeneralForm} />
-                <TextField id="last_name" label="Sobrenome" variant="outlined" value={form.name_name} onChange={setGeneralForm} />
-                <TextField id="cpf" label="CPF" variant="outlined" value={form.cpf} onChange={setGeneralForm} />
-                <TextField id="street" label="Rua" variant="outlined" value={form.street} onChange={setGeneralForm} />
-                <TextField id="street_number" label="Numero" type="number" variant="outlined" value={form.street_number} onChange={setGeneralForm} />
-                <TextField id="district" label="Bairro" variant="outlined" value={form.district} onChange={setGeneralForm} />
-                <TextField id="cep" label="CEP" variant="outlined" value={form.cep} onChange={setGeneralForm} />
-                <TextField id="city" label="Cidade" variant="outlined" value={form.city} onChange={setGeneralForm} />
+                <TextField size="small" required id="name" label="Nome" variant="filled" value={form.name} onChange={setGeneralForm} />
+                <TextField size="small" required id="last_name" label="Sobrenome" variant="filled" value={form.name_name} onChange={setGeneralForm} />
+                <TextField size="small" required id="cpf" label="CPF" variant="filled" value={form.cpf} onChange={setGeneralForm} />
+                <TextField size="small" required id="street" label="Rua" variant="filled" value={form.street} onChange={setGeneralForm} />
+                <TextField size="small" required id="street_number" label="Numero" type="number" variant="filled" value={form.street_number} onChange={setGeneralForm} />
+                <TextField size="small" required id="district" label="Bairro" variant="filled" value={form.district} onChange={setGeneralForm} />
+                <TextField size="small" required id="cep" label="CEP" variant="filled" value={form.cep} onChange={setGeneralForm} />
+                <TextField size="small" required id="city" label="Cidade" variant="filled" value={form.city} onChange={setGeneralForm} />
             </Stack>
             <Stack spacing={2} direction="row">
                 <Button variant="contained" onClick={() => { goToPage('/') }} >Voltar</Button>

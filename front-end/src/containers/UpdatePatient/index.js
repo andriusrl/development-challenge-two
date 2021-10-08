@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { cpfMask } from '../../mask/maskCpf';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -16,9 +17,12 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const baseUrl = 'https://5kmnqpg37d.execute-api.us-east-1.amazonaws.com/default/update_patient'
 
 export default function UpdatePatient() {
-
+    const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
+    const patient = JSON.parse(window.localStorage.getItem('patient'))
+    const [form, setForm] = useState(patient || undefined)
+    const auth = JSON.parse(window.localStorage.getItem('auth'))
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -28,26 +32,15 @@ export default function UpdatePatient() {
         setOpen(false);
     };
 
-    const history = useHistory();
-
-    const patient = JSON.parse(window.localStorage.getItem('patient'))
-
-    const [form, setForm] = useState(patient || undefined)
-
-    // const [open, setOpen] = React.useState(true);
-    // const handleOpen = () => {
-    //     setOpen(true);
-    // };
-    // const handleClose = () => {
-    //     setOpen(false);
-    // };
-
     const updatePatient = async () => {
         try {
             setLoading(true)
             const res = await axios.post(
                 `https://thingproxy.freeboard.io/fetch/${baseUrl}`,
-                form
+                form,
+                { headers : {
+                    Authorization: auth.token
+                }}
             )
             console.log(res)
             console.log(res.data)
@@ -55,7 +48,6 @@ export default function UpdatePatient() {
             setOpen(true)
 
         } catch (error) {
-            console.log("Erro no update")
             console.log(error)
             console.log(error.data)
             console.log(error.status)
@@ -65,9 +57,10 @@ export default function UpdatePatient() {
 
     const setGeneralForm = (event) => {
         const formCopy = form
+        console.log(event.target.id)
         setForm({
             ...formCopy,
-            [event.target.id]: event.target.value,
+            [event.target.id]: `${event.target.id === 'cpf' ? cpfMask(event.target.value) : event.target.value}`,
         })
     }
 

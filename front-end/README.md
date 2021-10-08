@@ -1,6 +1,3 @@
-### Link de acesso
-### http://medcloud-andrius.surge.sh/
-
 # CRUD Pacientes
 
 ### Permite listar, adicionar, atualizar e excluir pacientes.

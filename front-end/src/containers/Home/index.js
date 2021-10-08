@@ -54,6 +54,7 @@ export default function Home() {
         }
         setOpenWarning(false);
         setOpenLoading(false);
+        setOpenLoadingSucess(false);
     };
 
     async function deletePatient (){

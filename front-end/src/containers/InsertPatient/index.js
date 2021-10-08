@@ -8,6 +8,12 @@ import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { cpfMask } from '../../mask/maskCpf';
 import ButtonCustom from '../../styles/button';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const baseUrl = 'https://thingproxy.freeboard.io/fetch/https://7tzui130j5.execute-api.us-east-1.amazonaws.com/default/insert_patient'
 
@@ -16,7 +22,8 @@ export default function InsertPatient() {
     const auth = JSON.parse(window.localStorage.getItem('auth'))
 
     const history = useHistory();
-
+    const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
     const [form, setForm] = useState({
         name: "",
         last_name: "",
@@ -27,6 +34,14 @@ export default function InsertPatient() {
         cep: "",
         city: ""
     })
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setLoading(false)
+        setOpen(false);
+    };
 
     const insertPatient = async () => {
         try {
@@ -84,12 +99,22 @@ export default function InsertPatient() {
         // autoHeight
         // autoPageSize
         >
+            <Snackbar open={loading} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+                    Atualizando cadastro, aguarde...
+                </Alert>
+            </Snackbar>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    Paciente atualizado com sucesso!!
+                </Alert>
+            </Snackbar>
             <Typography variant="h3" gutterBottom component="div">
                 Cadastro de paciente
             </Typography>
             <Stack spacing={2}>
                 <TextField size="small" required id="name" label="Nome" variant="filled" value={form.name} onChange={setGeneralForm} />
-                <TextField size="small" required id="last_name" label="Sobrenome" variant="filled" value={form.name_name} onChange={setGeneralForm} />
+                <TextField size="small" required id="last_name" label="Sobrenome" variant="filled" value={form.last_name} onChange={setGeneralForm} />
                 <TextField size="small" required id="cpf" label="CPF" variant="filled" value={form.cpf} onChange={setGeneralForm} />
                 <TextField size="small" required id="street" label="Rua" variant="filled" value={form.street} onChange={setGeneralForm} />
                 <TextField size="small" required id="street_number" label="Numero" type="number" variant="filled" value={form.street_number} onChange={setGeneralForm} />
